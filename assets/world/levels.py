@@ -1,3 +1,6 @@
+import random
+import time
+from threading import Thread
 from tkinter import *
 
 
@@ -47,13 +50,23 @@ class Levels:
         self.barrier = Label(self.Game_Frame, width=50, height=100, bg='#FFFFFF', fg='#FFFFFF')
         self.barrier.place(relx=.875, rely=.0)
 
-        # switch = Label(self.Game_Frame, font=('MS PGothic', 1, ''), bg='#bdc3c7', fg='#bdc3c7')
-        # switch.place(relx=.4, rely=.6)
-
         Test = Switch(self.Game_Frame, 'Test', [0.665, 0.55])
         Test2 = Switch(self.Game_Frame, 'Test', [0.44, 0.40])
         self.Game_Instance.Game_Switches.extend([Test, Test2])
         self.currentAssets = [floor, floor2, floor3, floor4, floor5, Test, Test2]
+
+    def three(self):
+        pass
+
+    def four(self):
+        floor = Label(self.Game_Frame, width=65, height=300, bg='#222f3e', fg='#222f3e')
+        floor.place(relx=.0, rely=.8)
+
+        floor2 = Label(self.Game_Frame, width=65, height=300, bg='#222f3e', fg='#222f3e')
+        floor2.place(relx=.7, rely=.8)
+
+        t = Star(self.Game_Frame)
+        Thread(target=t.place).start()
 
 
 class Switch:
@@ -78,6 +91,29 @@ class Switch:
 
     def place_forget(self):
         self.Switch_Item.place_forget()
+
+
+class Stars:
+    def __init__(self, frame):
+        self.Game_Frame = frame
+        self.positions = []
+
+    def place(self):
+        y = [0.1, 0.15, 0.2, 0.125, 0.175, 0.05, 0.215, 0.25, 0.275, 0.3, 0.325, 0.35, 0.375]
+        for x in range(0, 50):
+            self.positions.append([0.025 * x, random.choice(y)])
+
+        for position in self.positions:
+            t = Label(self.Game_Frame, text='●', font=('MS PGothic', 3, 'bold'), bg='#141414', fg='#FFFFFF')
+            t.place(relx=position[0], rely=position[1])
+            time.sleep(0.01)
+
+
+
+
+
+
+
 
 
 

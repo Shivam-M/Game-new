@@ -11,6 +11,7 @@ class Player:
         self.Tag = tag
         self.Location = location
         self.Velocity = [0.0, 0.0]
+        self.Velocity2 = [0.0, 0.0]
         self.Left, self.Right = False, False
 
         self.cooldownJump = False
@@ -89,6 +90,8 @@ class Player:
         while True:
             self.Location[1] += self.Velocity[1]
             self.Location[0] += self.Velocity[0]
+            self.Location[1] += self.Velocity2[1]
+            self.Location[0] += self.Velocity2[0]
             self.Player_Model.place(relx=self.Location[0], rely=self.Location[1])
 
     def gravity(self):

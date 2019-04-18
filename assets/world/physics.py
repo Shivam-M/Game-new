@@ -51,18 +51,21 @@ class Physics:
                         self.Player.Location[1] += 0.002
                 elif 0.78 > self.Player.Location[0] > 0.73:
                     self.Player.Location[1] += 0.002
-                elif self.Player.Location[0] >= 0.85:
+                elif 0.99 > self.Player.Location[0] >= 0.85:
                     if not self.Unlocked:
                         self.Player.Location[0] = 0.85
                     if self.Player.Location[1] <= 0.74:
                         self.Player.Location[1] += 0.002
+                elif self.Player.Location[0] >= 0.99:
+                    self.one()
+                    self.Game_Instance.Levels.one()
                 else:
                     if self.Player.Location[1] <= 0.74:
                         self.Player.Location[1] += 0.002
                 if self.Player.Location[1] > 1.0:
                     self.Game_Instance.Game_Lives -= 1
-                    self.Game_Instance.Levels.one()
-                    self.one()
+                    self.Game_Instance.Levels.four()
+                    self.four()
                     self.Player.Location = [0.05, 0.75]
                 a = True
                 for switch in self.Game_Instance.Game_Switches:
@@ -73,4 +76,25 @@ class Physics:
                     self.Unlocked = True
                 time.sleep(0.002)
         self.physicsLevel = 2
+        Thread(target=physics).start()
+
+    def three(self):
+        self.Player.Location = [0.05, 0.75]
+        self.Player.Velocity2[0] = -0.000001
+        def physics():
+            pass
+            #while True:
+            #    pass
+
+        self.physicsLevel = 3
+        Thread(target=physics).start()
+
+    def four(self):
+        self.Player.Location = [0.05, 0.75]
+        def physics():
+            while True:
+                if self.Player.Location[1] <= 0.74:
+                    self.Player.Location[1] += 0.002
+                time.sleep(0.002)
+        self.physicsLevel = 4
         Thread(target=physics).start()

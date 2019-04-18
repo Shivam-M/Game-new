@@ -26,12 +26,13 @@ class Diamond:
         self.Player_One = None
         self.Physics = None
         self.Game_Switches = []
+        self.Live_Strings = ['one', 'two', 'three']
 
         self.Colour_Background = self.Game_Config['COLOURS']['BACKGROUND']
         self.Colour_Foreground = self.Game_Config['COLOURS']['FOREGROUND']
 
         self.Window = Tk()
-        self.Window.geometry(f'{self.Game_Config["WINDOW"]["WIDTH"]}x{self.Game_Config["WINDOW"]["HEIGHT"]}')
+        self.Window.geometry(f'{self.Game_Config["WINDOW"]["WIDTH"]}x{self.Game_Config["WINDOW"]["HEIGHT"]}+100+100')
         self.Window.config(bg=self.Colour_Background)
 
         self.UI_Menu = Menu(self)
@@ -40,21 +41,22 @@ class Diamond:
 
         self.UI_Menu.draw()
         # self.UI_Settings.draw()
-        self.UI_Updater.draw()
+        # self.UI_Updater.draw()
 
         self.Game_Frame = Frame(self.Window, bg=self.Game_Config['COLOURS']['BACKGROUND'], height=self.Game_Config['WINDOW']['HEIGHT'], width=self.Game_Config['WINDOW']['WIDTH'])
         self.locationLabel = Label(self.Game_Frame, text='None', bg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 10, 'bold'), fg='#FFFFFF')
-        self.locationLabel.place(relx=.05, rely=.05)
+        # self.locationLabel.place(relx=.05, rely=.05)
         self.helpfulLabelPrefix = Label(self.Game_Frame, text='Help', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='YELLOW', width=5)
-        self.helpfulLabelPrefix.place(relx=.25, rely=.2)
-        self.helpfulLabelText = Label(self.Game_Frame, text='Press X to activate or deactivate switches', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=45)
-        self.helpfulLabelText.place(relx=.31, rely=.2)
+        self.helpfulLabelText = Label(self.Game_Frame, text='Placeholder help message.', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=45)
 
+        self.livesLabelIcon = Label(self.Game_Frame, text='3', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=2)
         self.livesLabelPrefix = Label(self.Game_Frame, text='Lives', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#e74c3c', width=6)
-        # self.livesLabelPrefix.place(relx=.26, rely=.2)
         self.livesLabelText = Label(self.Game_Frame, text='You have three lives remaining', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=40)
-        # self.livesLabelText.place(relx=.33, rely=.2)
+        # self.livesLabelIcon.place(relx=.122, rely=0.05)
         # self.startSingleplayer()
+
+        # self.helpMessage('Press X to activate or deactivate switches')
+        self.livesMessage(3)
 
         self.Window.mainloop()
 
@@ -63,9 +65,9 @@ class Diamond:
         self.Game_Frame.place(relx=0, rely=0)
         self.Player_One = Player(self, self.Game_Frame, '#FFFFFF', 'P1', [0.05, 0.75])
         self.Levels = Levels(self, self.Game_Frame)
-        self.Levels.two()
+        self.Levels.one()
         self.Physics = Physics(self, self.Game_Frame, self.Player_One)
-        self.Physics.two()
+        self.Physics.one()
         Thread(target=self.updateLocation).start()
 
     def updateLocation(self):
@@ -75,6 +77,45 @@ class Diamond:
 
     def startMultiplayer(self):
         pass
+
+    def helpMessage(self, message, timeout=3):
+        def clearMessage():
+            time.sleep(timeout)
+            self.helpfulLabelPrefix.place_forget()
+            self.helpfulLabelText.place_forget()
+        self.helpfulLabelPrefix.place(relx=.25, rely=.2)
+        self.helpfulLabelText.config(text=message)
+        self.helpfulLabelText.place(relx=.31, rely=.2)
+        Thread(target=clearMessage).start()
+
+    def livesMessage(self, timeout=3):
+        def clearMessage():
+            time.sleep(timeout)
+            self.livesLabelPrefix.place_forget()
+            self.livesLabelText.place_forget()
+            x = 0.26
+            y = 0.20
+            while True:
+                self.livesLabelPrefix.place(relx=x, rely=y)
+                x -= 0.0053
+                y -= 0.0038
+                time.sleep(0.003)
+                if x <= 0.05:
+                    break
+            x = 0.1
+            y = 0.05
+            while True:
+                self.livesLabelIcon.config(text=self.Game_Lives)
+                self.livesLabelIcon.place(relx=x, rely=y)
+                x += 0.001
+                time.sleep(0.004)
+                if x >= 0.122:
+                    break
+
+        self.livesLabelPrefix.place(relx=.26, rely=.2)
+        self.livesLabelText.config(text=f'You have {self.Live_Strings[self.Game_Lives - 1]} lives remaining')
+        self.livesLabelText.place(relx=.33, rely=.2)
+        Thread(target=clearMessage).start()
 
 
 if __name__ == '__main__':
