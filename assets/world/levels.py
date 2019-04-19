@@ -65,7 +65,7 @@ class Levels:
         floor2 = Label(self.Game_Frame, width=65, height=300, bg='#222f3e', fg='#222f3e')
         floor2.place(relx=.7, rely=.8)
 
-        t = Star(self.Game_Frame)
+        t = Stars(self.Game_Frame)
         Thread(target=t.place).start()
 
 

@@ -24,6 +24,7 @@ class Physics:
                         self.Player.Location[1] += 0.002
                 if self.Player.Location[1] > 1.0:
                     self.Game_Instance.Game_Lives -= 1
+                    self.Game_Instance.livesMessage()
                     self.Player.Location = [0.05, 0.75]
                 time.sleep(0.002)
         self.physicsLevel = 1
@@ -57,15 +58,16 @@ class Physics:
                     if self.Player.Location[1] <= 0.74:
                         self.Player.Location[1] += 0.002
                 elif self.Player.Location[0] >= 0.99:
-                    self.one()
-                    self.Game_Instance.Levels.one()
+                    self.four()
+                    self.Game_Instance.Levels.four()
                 else:
                     if self.Player.Location[1] <= 0.74:
                         self.Player.Location[1] += 0.002
                 if self.Player.Location[1] > 1.0:
                     self.Game_Instance.Game_Lives -= 1
-                    self.Game_Instance.Levels.four()
-                    self.four()
+                    self.Game_Instance.livesMessage()
+                    self.Game_Instance.Levels.one()
+                    self.one()
                     self.Player.Location = [0.05, 0.75]
                 a = True
                 for switch in self.Game_Instance.Game_Switches:
