@@ -29,6 +29,8 @@ class Diamond:
         self.Physics = None
         self.Game_Switches = []
         self.Live_Strings = ['one', 'two', 'three']
+        self.Currently_Animating = False
+        self.Mode = False
 
         self.Colour_Background = self.Game_Config['COLOURS']['BACKGROUND']
         self.Colour_Foreground = self.Game_Config['COLOURS']['FOREGROUND']
@@ -47,9 +49,10 @@ class Diamond:
 
         self.Game_Frame = Frame(self.Window, bg=self.Game_Config['COLOURS']['BACKGROUND'], height=self.Game_Config['WINDOW']['HEIGHT'], width=self.Game_Config['WINDOW']['WIDTH'])
         self.locationLabel = Label(self.Game_Frame, text='None', bg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 10, 'bold'), fg='#FFFFFF')
-        # self.locationLabel.place(relx=.05, rely=.05)
+        self.locationLabel.place(relx=.75, rely=.05)
         self.helpfulLabelPrefix = Label(self.Game_Frame, text='Help', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='YELLOW', width=5)
         self.helpfulLabelText = Label(self.Game_Frame, text='Placeholder help message.', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=45)
+        self.helpfulLabelIcon = Label(self.Game_Frame, text='Switches', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=8)
 
         self.livesLabelIcon = Label(self.Game_Frame, text='3', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=2)
         self.livesLabelPrefix = Label(self.Game_Frame, text='Lives', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#e74c3c', width=6)
@@ -57,12 +60,10 @@ class Diamond:
 
         self.timeLabelText = Label(self.Game_Frame, text='10:00', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=6)
         self.timeLabelPrefix = Label(self.Game_Frame, text='Time', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#1abc9c', width=5)
-        # self.timeLabelText = Label(self.Game_Frame, text='09:34', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=6)
 
-        # self.livesLabelIcon.place(relx=.122, rely=0.05)
-        # self.startSingleplayer()
+        self.startSingleplayer()
 
-        # self.helpMessage('Press X to activate or deactivate switches')
+        self.Window.bind('<Tab>', lambda event: self.revealMessage())
 
         self.Window.mainloop()
 
@@ -70,7 +71,7 @@ class Diamond:
         self.UI_Menu.hide()
         self.Game_Frame.place(relx=0, rely=0)
         self.livesMessage(3)
-        self.Player_One = Player(self, self.Game_Frame, '#FFFFFF', 'P1', [0.05, 0.75])
+        self.Player_One = Player(self, self.Game_Frame, '#FFFFFF', 'P1', [0.95, 0.75])
         self.Levels = Levels(self, self.Game_Frame)
         self.Levels.one()
         self.Physics = Physics(self, self.Game_Frame, self.Player_One)
@@ -85,15 +86,79 @@ class Diamond:
     def startMultiplayer(self):
         pass
 
-    def helpMessage(self, message, timeout=3):
+    def helpMessage(self, message, minimal, timeout=3):
         def clearMessage():
             time.sleep(timeout)
             self.helpfulLabelPrefix.place_forget()
             self.helpfulLabelText.place_forget()
+            x = 0.25
+            y = 0.20
+            while True:
+                self.helpfulLabelPrefix.place(relx=x, rely=y)
+                x += 0.0053
+                y -= 0.0067
+                time.sleep(0.003)
+                if x >= 0.37:
+                    print(x, y)
+                    break
+            x = 0.37
+            y = 0.05
+            while True:
+                self.helpfulLabelIcon.place(relx=x, rely=y)
+                x += 0.001
+                time.sleep(0.003)
+                if x >= 0.426:
+                    break
         self.helpfulLabelPrefix.place(relx=.25, rely=.2)
         self.helpfulLabelText.config(text=message)
         self.helpfulLabelText.place(relx=.31, rely=.2)
         Thread(target=clearMessage).start()
+
+    def revealMessage(self):
+        def showMessage():
+            self.helpfulLabelIcon.place_forget()
+            x = 0.37
+            y = 0.05
+            while True:
+                self.helpfulLabelPrefix.place(relx=x, rely=y)
+                x -= 0.00538
+                y += 0.0068
+                time.sleep(0.003)
+                if x <= 0.25:
+                    print(x, y, '2')
+                    break
+                self.helpfulLabelText.place(relx=.31, rely=.2)
+        if not self.Mode:
+            Thread(target=showMessage).start()
+        else:
+            self.hideMessage()
+        self.Mode = not self.Mode
+
+    def hideMessage(self):
+        def moveMessage():
+            self.helpfulLabelPrefix.place_forget()
+            self.helpfulLabelText.place_forget()
+            x = 0.25
+            y = 0.20
+            while True:
+                self.helpfulLabelPrefix.place(relx=x, rely=y)
+                x += 0.0053
+                y -= 0.0067
+                time.sleep(0.003)
+                if x >= 0.37:
+                    print(x, y)
+                    break
+            x = 0.37
+            y = 0.05
+            while True:
+                self.helpfulLabelIcon.place(relx=x, rely=y)
+                x += 0.001
+                time.sleep(0.003)
+                if x >= 0.426:
+                    break
+        if not self.Currently_Animating:
+            Thread(target=moveMessage).start()
+
 
     def livesMessage(self, timeout=3):
         def clearMessage():

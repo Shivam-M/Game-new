@@ -94,10 +94,6 @@ class Player:
             self.Location[0] += self.Velocity2[0]
             self.Player_Model.place(relx=self.Location[0], rely=self.Location[1])
 
-    def gravity(self):
-        while True:
-            self.Velocity[1] += 0.05
-
     def switch(self):
         for switch in self.Game_Instance.Game_Switches:
             if abs(switch.Location[0] - self.Location[0]) <= 0.025:

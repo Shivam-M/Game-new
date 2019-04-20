@@ -1,5 +1,4 @@
 import time
-from tkinter import *
 from threading import Thread
 
 
@@ -9,6 +8,7 @@ class Physics:
         self.Game_Frame = frame
         self.Player = player
         self.physicsLevel = 0
+        self.Unlocked = None
 
     def one(self):
         def physics():
@@ -32,6 +32,7 @@ class Physics:
 
     def two(self):
         self.Unlocked = False
+
         def physics():
             while self.physicsLevel == 2:
                 if 0.36 > self.Player.Location[0] > 0.31:
@@ -83,20 +84,66 @@ class Physics:
     def three(self):
         self.Player.Location = [0.05, 0.75]
         self.Player.Velocity2[0] = -0.000001
+
         def physics():
             pass
-            #while True:
-            #    pass
 
         self.physicsLevel = 3
         Thread(target=physics).start()
 
     def four(self):
         self.Player.Location = [0.05, 0.75]
+
         def physics():
-            while True:
-                if self.Player.Location[1] <= 0.74:
-                    self.Player.Location[1] += 0.002
+            while self.physicsLevel == 4:
+                if self.Player.Location[0] > 0.99:
+                    self.five()
+                    self.Game_Instance.Levels.five()
+                else:
+                    if self.Player.Location[1] <= 0.74:
+                        self.Player.Location[1] += 0.002
                 time.sleep(0.002)
         self.physicsLevel = 4
+        Thread(target=physics).start()
+
+    def five(self):
+        self.Player.Location = [0.05, 0.75]
+
+        def physics():
+            while self.physicsLevel == 5:
+                if 0.42 >= self.Player.Location[0] > 0.29:
+                    if self.Player.Location[1] < 0.45:
+                        self.Player.Location[1] += 0.002
+                    elif self.Player.Location[1] > 0.455:
+                        if self.Player.Location[1] <= 0.74:
+                            self.Player.Location[1] += 0.002
+                elif 0.21 > self.Player.Location[0] > 0.07:
+                    if self.Player.Location[1] < 0.3:
+                        self.Player.Location[1] += 0.002
+                    elif self.Player.Location[1] > 0.355:
+                        if self.Player.Location[1] <= 0.74:
+                            self.Player.Location[1] += 0.002
+
+                elif 0.48 > self.Player.Location[0] > 0.42:
+                    self.Player.Location[1] += 0.002
+                elif 0.63 >= self.Player.Location[0] > 0.48:
+                    if self.Player.Location[1] < 0.6:
+                        self.Player.Location[1] += 0.002
+                    elif self.Player.Location[1] > 0.65:
+                        self.Player.Location[1] += 0.002
+                    # self.Player.Location[1] += 0.002
+                elif 0.7 >= self.Player.Location[0] > 0.63:
+                    self.Player.Location[1] += 0.002
+                elif 0.85 >= self.Player.Location[0] > 0.7:
+                    if self.Player.Location[1] < 0.45:
+                        self.Player.Location[1] += 0.002
+                    elif self.Player.Location[1] > 0.455:
+                        if self.Player.Location[1] <= 0.74:
+                            self.Player.Location[1] += 0.002
+                else:
+                    if self.Player.Location[1] <= 0.74:
+                        self.Player.Location[1] += 0.002
+                time.sleep(0.002)
+
+        self.physicsLevel = 5
         Thread(target=physics).start()
