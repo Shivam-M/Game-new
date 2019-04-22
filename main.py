@@ -71,7 +71,7 @@ class Diamond:
         self.UI_Menu.hide()
         self.Game_Frame.place(relx=0, rely=0)
         self.livesMessage(3)
-        self.Player_One = Player(self, self.Game_Frame, '#FFFFFF', 'P1', [0.95, 0.75])
+        self.Player_One = Player(self, self.Game_Frame, '#FFFFFF', 'P1', [0.05, 0.75])
         self.Levels = Levels(self, self.Game_Frame)
         self.Levels.one()
         self.Physics = Physics(self, self.Game_Frame, self.Player_One)
@@ -125,7 +125,6 @@ class Diamond:
                 y += 0.0068
                 time.sleep(0.003)
                 if x <= 0.25:
-                    print(x, y, '2')
                     break
                 self.helpfulLabelText.place(relx=.31, rely=.2)
         if not self.Mode:
@@ -146,7 +145,6 @@ class Diamond:
                 y -= 0.0067
                 time.sleep(0.003)
                 if x >= 0.37:
-                    print(x, y)
                     break
             x = 0.37
             y = 0.05
@@ -156,9 +154,7 @@ class Diamond:
                 time.sleep(0.003)
                 if x >= 0.426:
                     break
-        if not self.Currently_Animating:
-            Thread(target=moveMessage).start()
-
+        Thread(target=moveMessage).start()
 
     def livesMessage(self, timeout=3):
         def clearMessage():
