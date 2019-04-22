@@ -26,7 +26,7 @@ class Settings:
 
         self.S_Theme = Switch(self, [0.85, 0.3], ['DARK', 'LIGHT'])
 
-        self.B_Menu = Button(self.Settings_Frame, text='Change Controls', font=('MS PGothic', 13, 'bold'), bg=self.Game_Instance.Colour_Background, fg='#95a5a6', bd=0, command=lambda: self.changeControls()).place(relx=.625, rely=.85)
+        self.B_Controls = Button(self.Settings_Frame, text='Change Controls', font=('MS PGothic', 13, 'bold'), bg=self.Game_Instance.Colour_Background, fg='#95a5a6', bd=0, command=lambda: self.changeControls()).place(relx=.625, rely=.85)
         self.B_Menu = Button(self.Settings_Frame, text='Return to Menu', font=('MS PGothic', 13, 'bold'), bg=self.Game_Instance.Colour_Background, fg='#E74C3C', bd=0, command=lambda: self.Settings_Frame.place_forget()).place(relx=.048, rely=.85)
         self.B_Save = Button(self.Settings_Frame, text='Save Settings', font=('MS PGothic', 13, 'bold'), bg=self.Game_Instance.Colour_Background, fg='#2ECC71', bd=0).place(relx=.809, rely=.85)
 
@@ -37,7 +37,7 @@ class Settings:
         self.Settings_Frame.place_forget()
 
     def changeControls(self):
-        pass
+        self.Game_Instance.UI_Controls.draw()
 
 
 class Switch:

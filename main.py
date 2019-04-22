@@ -9,9 +9,7 @@ from assets.world.levels import Levels
 from assets.player import Player
 from assets.world.physics import Physics
 from assets.interface.update import Updater
-
-
-# TODO: Snow level
+from assets.interface.controls import Controls
 
 
 class Diamond:
@@ -42,8 +40,10 @@ class Diamond:
         self.UI_Menu = Menu(self)
         self.UI_Settings = Settings(self)
         self.UI_Updater = Updater(self)
+        self.UI_Controls = Controls(self)
 
         self.UI_Menu.draw()
+        # self.UI_Controls.draw()
         # self.UI_Settings.draw()
         # self.UI_Updater.draw()
 
@@ -61,7 +61,7 @@ class Diamond:
         self.timeLabelText = Label(self.Game_Frame, text='10:00', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#FFFFFF', width=6)
         self.timeLabelPrefix = Label(self.Game_Frame, text='Time', fg=self.Game_Config['COLOURS']['BACKGROUND'], font=('MS PGothic', 11, 'bold'), bg='#1abc9c', width=5)
 
-        self.startSingleplayer()
+        # self.startSingleplayer()
 
         self.Window.bind('<Tab>', lambda event: self.revealMessage())
 
